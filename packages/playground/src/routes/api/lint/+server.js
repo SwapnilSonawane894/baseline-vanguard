@@ -28,7 +28,7 @@ export async function POST({ request }) {
       // Initialize the ESLint linter instance programmatically.
       const linter = new Linter();
       // We have to define the rules from our plugin so the linter knows about them.
-      linter.defineRules(eslintPlugin.rules);
+      linter.defineRules(eslintPlugin.default.rules);
 
       const config = {
         parserOptions: { ecmaVersion: 2022, sourceType: 'module' },
