@@ -6,7 +6,7 @@
 
 ### ✨ [Try the Live Interactive Playground!](https://baseline-vanguard-playground-nvkf.vercel.app) ✨
 
-An intelligent ESLint and Stylelint tool that helps developers adopt modern web features by automatically providing fixes and performance suggestions based on [Web Platform Baseline](https://web.dev/blog/baseline) data.
+An intelligent ESLint and Stylelint tool that helps developers adopt modern web features by automatically providing fixes and performance suggestions based on [Web Platform Baseline](https://web.dev/baseline) data.
 
 
 ![Demo GIF of Baseline Vanguard](demo.gif)
