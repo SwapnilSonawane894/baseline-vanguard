@@ -1,6 +1,5 @@
 # Baseline Vanguard 🛡️
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)
 ![Tech](https://img.shields.io/badge/tech-ESLint%20%7C%20Stylelint%20%7C%20Svelte-orange.svg)
 
