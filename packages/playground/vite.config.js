@@ -5,16 +5,12 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	ssr: {
 		noExternal: [
-			'@baseline-vanguard/eslint-plugin-baseline',
-			'@baseline-vanguard/stylelint-plugin-baseline',
-			'web-features'
+			'postcss'
 		]
 	},
 	optimizeDeps: {
 		include: [
-			'@baseline-vanguard/eslint-plugin-baseline',
-			'@baseline-vanguard/stylelint-plugin-baseline',
-			'web-features'
+			'postcss'
 		]
 	}
 });

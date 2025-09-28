@@ -1,6 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { Linter } from 'eslint';
 import stylelint from 'stylelint';
+import postcss from 'postcss';
 
 // Simplified baseline feature detection for the playground
 // This avoids web-features dependency issues in serverless environments
@@ -21,17 +22,30 @@ const createSimplifiedESLintPlugin = () => ({
       create: (context) => ({
         // Simple rule that detects some common non-baseline features
         CallExpression: (node) => {
-          // Example: detect usage of newer JS features
-          if (node.callee.name === 'at' && node.callee.type === 'Identifier') {
+          // Detect Array.at() method
+          if (node.callee.type === 'MemberExpression' && 
+              node.callee.property && 
+              node.callee.property.name === 'at') {
             context.report({
               node,
-              message: 'Array.at() is not Baseline. Consider using bracket notation.',
+              message: 'Array.at() is not Baseline. Consider using bracket notation for better compatibility.',
               fix: (fixer) => {
                 if (node.arguments.length === 1) {
-                  const arg = context.getSourceCode().getText(node.arguments[0]);
-                  return fixer.replaceText(node, `[${arg}]`);
+                  const sourceCode = context.getSourceCode();
+                  const arrayText = sourceCode.getText(node.callee.object);
+                  const argText = sourceCode.getText(node.arguments[0]);
+                  return fixer.replaceText(node, `${arrayText}[${argText}]`);
                 }
               }
+            });
+          }
+        },
+        ImportDeclaration: (node) => {
+          // Detect modern import features
+          if (node.source.value === 'moment') {
+            context.report({
+              node,
+              message: 'moment.js is heavy (67kB). Consider using date-fns or native Date for better performance.',
             });
           }
         }
@@ -63,7 +77,6 @@ const createSimplifiedStylelintPlugin = () => ({
         
         if (result.stylelint.config.fix) {
           // Create @supports wrapper
-          const postcss = require('postcss');
           const supportsRule = postcss.atRule({
             name: 'supports',
             params: 'selector(:has(*))'
@@ -92,7 +105,6 @@ const createSimplifiedStylelintPlugin = () => ({
       });
       
       if (result.stylelint.config.fix) {
-        const postcss = require('postcss');
         const supportsRule = postcss.atRule({
           name: 'supports',
           params: '(container-type: inline-size)'
