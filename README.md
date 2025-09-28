@@ -45,3 +45,46 @@ cd baseline-vanguard
 
 # Install dependencies
 pnpm install
+```
+
+## Running the Demo Locally
+
+```bash
+# Run the linters and auto-fixers on the demo files
+pnpm demo:fix:js
+pnpm demo:fix:css
+
+# Run the interactive web playground locally
+pnpm playground:dev
+```
+
+## Easy Configuration
+
+Our plugins come with a recommended configuration to get you started instantly with zero setup.
+
+**ESLint Setup (.eslintrc.js):**
+
+```javascript
+module.exports = {
+  // ... your other config
+  extends: [
+    "eslint:recommended",
+    "plugin:@baseline-vanguard/baseline/recommended"
+  ]
+};
+```
+
+**Stylelint Setup (.stylelintrc.js):**
+
+```javascript
+module.exports = {
+  // ... your other config
+  plugins: ["@baseline-vanguard/stylelint-plugin-baseline"],
+  rules: {
+    "baseline/detect-unsupported-css-features": true
+  }
+};
+```
+
+## Install Dependencies
+pnpm install
