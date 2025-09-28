@@ -1,22 +1,14 @@
-/**
- * @fileoverview Rule to suggest replacing heavy third-party libraries with native, Baseline-supported APIs.
- * @author Your Name
- */
-const webFeatures = require('web-features');
+import * as webFeatures from 'web-features';
 
-/** @type {import('eslint').Rule.RuleModule} */
-module.exports = {
+export default {
   meta: {
     type: "suggestion",
     docs: {
-      description: "Suggests replacing heavy third-party libraries with native, Baseline-supported APIs to improve performance.",
+      description: "Suggests replacing heavy third-party libraries with native, Baseline APIs to improve performance.",
       recommended: true,
     },
     fixable: null,
     schema: [],
-    messages: {
-        preferNative: "The native 'Intl' API is Baseline-supported and can often replace 'moment.js', potentially reducing final bundle size."
-    }
   },
   create: function(context) {
     return {
@@ -30,7 +22,7 @@ module.exports = {
           if (featureData && featureData.status.baseline === 'high') {
             context.report({
               node: node.source,
-              messageId: 'preferNative'
+              message: "'moment.js' is a large library. The native 'Intl' API is now Baseline and can handle date/time formatting with zero impact on your bundle size. Consider refactoring."
             });
           }
         }

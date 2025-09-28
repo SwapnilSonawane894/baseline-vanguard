@@ -1,6 +1,7 @@
 {
   "name": "@baseline-vanguard/eslint-plugin-baseline",
   "version": "1.0.0",
+  "type": "module",
   "main": "lib/index.js",
   "scripts": {
     "test": "vitest run"

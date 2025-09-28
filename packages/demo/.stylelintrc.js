@@ -1,6 +1,6 @@
 module.exports = {
   "plugins": [
-    "../stylelint-plugin-baseline"
+    "@baseline-vanguard/stylelint-plugin-baseline"
   ],
   "rules": {
     "baseline/detect-unsupported-css-features": true

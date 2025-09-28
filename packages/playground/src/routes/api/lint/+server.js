@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { Linter } from 'eslint';
 import stylelint from 'stylelint';
-import * as eslintPlugin from '@baseline-vanguard/eslint-plugin-baseline';
+import eslintPlugin from '@baseline-vanguard/eslint-plugin-baseline';
 import * as stylelintPlugin from '@baseline-vanguard/stylelint-plugin-baseline';
 
 // Initialize the ESLint linter instance programmatically.
@@ -19,29 +19,33 @@ export async function POST({ request }) {
         parserOptions: { ecmaVersion: 2022, sourceType: 'module' },
         rules: {
           // We enable our custom rules for the playground execution.
-          '@baseline-vanguard/baseline/detect-unsupported-js-features': ['error', { supportLevel: 'high' }],
-          '@baseline-vanguard/baseline/no-heavy-alternatives': 'warn',
+          'detect-unsupported-js-features': ['error', { supportLevel: 'high' }],
+          'no-heavy-alternatives': 'warn',
         },
       };
+       // 1. First, get all the original messages before any fixes.
+      const originalMessages = linter.verify(code, config);
       
-      // verifyAndFix runs the linter and applies any safe fixes it finds.
-      const { output, messages } = linter.verifyAndFix(code, config);
-      return json({ fixedCode: output, messages });
+      // 2. Then, get the fixed code.
+      const { output } = linter.verifyAndFix(code, config);
+
+      // 3. Return BOTH the fixed code AND the original messages.
+      return json({ fixedCode: output, messages: originalMessages });
 
     } else if (language === 'css') {
       // Stylelint's programmatic API is async.
-      const { output, results } = await stylelint.lint({
+      const result = await stylelint.lint({ 
         code,
-        fix: true, // Tell Stylelint to apply fixes.
+        fix: true,
         config: {
-          plugins: [stylelintPlugin],
+          plugins: [stylelintPlugin.default],
           rules: {
             'baseline/detect-unsupported-css-features': true,
           },
         },
       });
     
-      return json({ fixedCode: output, messages: results[0].warnings });
+      return json({ fixedCode: result.code, messages: result.results[0].warnings });
     }
 
     return json({ error: 'Unsupported language' }, { status: 400 });
