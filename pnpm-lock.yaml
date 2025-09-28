@@ -39,6 +39,12 @@ importers:
 
   packages/playground:
     dependencies:
+      '@baseline-vanguard/eslint-plugin-baseline':
+        specifier: workspace:*
+        version: link:../eslint-plugin-baseline
+      '@baseline-vanguard/stylelint-plugin-baseline':
+        specifier: workspace:*
+        version: link:../stylelint-plugin-baseline
       '@codemirror/lang-css':
         specifier: ^6.3.1
         version: 6.3.1
@@ -48,13 +54,16 @@ importers:
       codemirror:
         specifier: ^6.0.2
         version: 6.0.2
+      eslint:
+        specifier: ^8.56.0
+        version: 8.57.1
+      stylelint:
+        specifier: ^16.0.0
+        version: 16.24.0(typescript@5.9.2)
+      web-features:
+        specifier: ^1.2.0
+        version: 1.4.0
     devDependencies:
-      '@baseline-vanguard/eslint-plugin-baseline':
-        specifier: workspace:*
-        version: link:../eslint-plugin-baseline
-      '@baseline-vanguard/stylelint-plugin-baseline':
-        specifier: workspace:*
-        version: link:../stylelint-plugin-baseline
       '@codemirror/basic-setup':
         specifier: ^0.20.0
         version: 0.20.0
@@ -76,9 +85,6 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.0
         version: 3.1.2(svelte@5.39.3)(vite@5.4.20)
-      eslint:
-        specifier: ^8.56.0
-        version: 8.57.1
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.2(eslint@8.57.1)
@@ -91,9 +97,6 @@ importers:
       prettier-plugin-svelte:
         specifier: ^3.1.2
         version: 3.4.0(prettier@3.6.2)(svelte@5.39.3)
-      stylelint:
-        specifier: ^16.0.0
-        version: 16.24.0(typescript@5.9.2)
       svelte:
         specifier: ^5.0.0
         version: 5.39.3

@@ -7,13 +7,18 @@ let eslintPlugin, stylelintPlugin;
 
 // Initialize plugins lazily to avoid build-time issues
 async function initializePlugins() {
-  if (!eslintPlugin) {
-    eslintPlugin = await import('@baseline-vanguard/eslint-plugin-baseline');
+  try {
+    if (!eslintPlugin) {
+      eslintPlugin = await import('@baseline-vanguard/eslint-plugin-baseline');
+    }
+    if (!stylelintPlugin) {
+      stylelintPlugin = await import('@baseline-vanguard/stylelint-plugin-baseline');
+    }
+    return { eslintPlugin, stylelintPlugin };
+  } catch (error) {
+    console.error('Failed to initialize plugins:', error);
+    throw new Error(`Plugin initialization failed: ${error.message}`);
   }
-  if (!stylelintPlugin) {
-    stylelintPlugin = await import('@baseline-vanguard/stylelint-plugin-baseline');
-  }
-  return { eslintPlugin, stylelintPlugin };
 }
 
 // This is our serverless API endpoint that powers the web playground.
