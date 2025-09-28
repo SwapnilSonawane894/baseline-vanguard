@@ -46,24 +46,45 @@ const createSimplifiedESLintPlugin = () => ({
               node.callee.property.name === 'hasOwnProperty') {
             context.report({
               node,
-              message: 'hasOwnProperty() can be unreliable. Consider using Object.hasOwn() or Object.prototype.hasOwnProperty.call() for better safety.',
+              message: 'hasOwnProperty() can be unreliable. Consider using Object.hasOwn() for better safety and cleaner syntax.',
               fix: (fixer) => {
                 if (node.arguments.length === 1) {
                   const sourceCode = context.getSourceCode();
                   const objectText = sourceCode.getText(node.callee.object);
                   const argText = sourceCode.getText(node.arguments[0]);
-                  return fixer.replaceText(node, `Object.prototype.hasOwnProperty.call(${objectText}, ${argText})`);
+                  return fixer.replaceText(node, `Object.hasOwn(${objectText}, ${argText})`);
                 }
               }
             });
           }
         },
         ImportDeclaration: (node) => {
-          // Detect modern import features
+          // Detect heavy libraries
           if (node.source.value === 'moment') {
             context.report({
               node,
-              message: 'moment.js is heavy (67kB). Consider using date-fns or native Date for better performance.',
+              message: 'moment.js is heavy (67kB). Consider using date-fns (2kB) or native Date for better performance.',
+            });
+          }
+          if (node.source.value === 'lodash') {
+            context.report({
+              node,
+              message: 'lodash is heavy (70kB). Consider using native ES6+ methods or lodash-es for tree-shaking.',
+            });
+          }
+        },
+        MemberExpression: (node) => {
+          // Detect newer array methods that might not be baseline
+          if (node.property && node.property.name === 'flat') {
+            context.report({
+              node,
+              message: 'Array.flat() might not be Baseline in all browsers. Consider a polyfill or manual flattening.',
+            });
+          }
+          if (node.property && node.property.name === 'flatMap') {
+            context.report({
+              node,
+              message: 'Array.flatMap() might not be Baseline in all browsers. Consider combining map() and flat().',
             });
           }
         }
@@ -136,6 +157,69 @@ const createSimplifiedStylelintPlugin = () => ({
         supportsRule.raws.after = '\n\n';
         
         atRule.replaceWith(supportsRule);
+      }
+    });
+
+    // Handle @starting-style for entry animations
+    root.walkAtRules('starting-style', atRule => {
+      if (atRule.parent?.type === 'atrule' && atRule.parent.name === 'supports') {
+        return;
+      }
+      
+      result.warn('CSS feature \'@starting-style\' is not Baseline. Consider wrapping in @supports for progressive enhancement.', {
+        node: atRule
+      });
+      
+      if (result.stylelint.config.fix) {
+        const supportsRule = postcss.atRule({
+          name: 'supports',
+          params: 'at-rule(starting-style)'
+        });
+        
+        const clonedAtRule = atRule.clone();
+        clonedAtRule.raws.before = '\n  ';
+        clonedAtRule.raws.after = '\n';
+        
+        supportsRule.append(clonedAtRule);
+        supportsRule.raws.after = '\n\n';
+        
+        atRule.replaceWith(supportsRule);
+      }
+    });
+
+    // Handle CSS nesting (if not in @supports)
+    root.walkRules(rule => {
+      if (rule.parent?.type === 'rule' && rule.parent?.parent?.type !== 'atrule') {
+        result.warn('CSS Nesting might not be Baseline in all browsers. Consider using a PostCSS plugin or SCSS.', {
+          node: rule
+        });
+      }
+    });
+
+    // Handle modern CSS functions
+    root.walkDecls(decl => {
+      const value = decl.value;
+      
+      // Check for color-mix()
+      if (value.includes('color-mix(')) {
+        result.warn('CSS color-mix() function is not Baseline. Consider using a fallback color or PostCSS plugin.', {
+          node: decl
+        });
+      }
+      
+      // Check for view-transition-name
+      if (decl.prop === 'view-transition-name') {
+        result.warn('view-transition-name is not Baseline. Consider wrapping in @supports for progressive enhancement.', {
+          node: decl
+        });
+      }
+      
+      // Check for container-type without @supports
+      if (decl.prop === 'container-type' && 
+          decl.parent?.parent?.type !== 'atrule') {
+        result.warn('container-type should be wrapped in @supports for better browser compatibility.', {
+          node: decl
+        });
       }
     });
   }
