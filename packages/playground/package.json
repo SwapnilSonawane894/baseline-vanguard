@@ -29,13 +29,11 @@
     "vite": "^5.0.3"
   },
   "dependencies": {
-    "@baseline-vanguard/eslint-plugin-baseline": "workspace:*",
-    "@baseline-vanguard/stylelint-plugin-baseline": "workspace:*",
     "@codemirror/lang-css": "^6.3.1",
     "@codemirror/lang-javascript": "^6.2.4",
     "codemirror": "^6.0.2",
     "eslint": "^8.56.0",
-    "stylelint": "^16.0.0",
-    "web-features": "^1.2.0"
+    "postcss": "^8.4.0",
+    "stylelint": "^16.0.0"
   }
 }
