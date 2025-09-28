@@ -1,0 +1,14 @@
+{
+  "name": "@baseline-vanguard/eslint-plugin-baseline",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "web-features": "^1.2.0"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.4"
+  }
+}

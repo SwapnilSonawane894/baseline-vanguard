@@ -1,0 +1,9 @@
+{
+  "name": "@baseline-vanguard/stylelint-plugin-baseline",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "web-features": "^1.2.0",
+    "postcss-selector-parser": "^6.1.0"
+  }
+}

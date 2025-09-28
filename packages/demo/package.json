@@ -1,0 +1,14 @@
+{
+  "name": "@baseline-vanguard/demo",
+  "version": "1.0.0",
+  "scripts": {
+    "lint:js": "eslint .",
+    "fix:js": "eslint . --fix",
+    "lint:css": "stylelint **/*.css",
+    "fix:css": "stylelint **/*.css --fix"
+  },
+  "devDependencies": {
+    "@baseline-vanguard/eslint-plugin-baseline": "workspace:*",
+    "@baseline-vanguard/stylelint-plugin-baseline": "workspace:*"
+  }
+}

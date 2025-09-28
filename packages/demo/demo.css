@@ -1,0 +1,36 @@
+/* Demo file showcasing Baseline Vanguard Stylelint auto-fixes */
+
+/* FEATURE #1: :has() selector - will be auto-wrapped in @supports */
+article:has(h2.featured) {
+  border: 2px solid green;
+  padding: 1rem;
+}
+
+.sidebar:has(.important) {
+  background: yellow;
+}
+
+/* FEATURE #2: @container queries - will be auto-wrapped in @supports */
+.card-container {
+  container-type: inline-size;
+}
+
+@container (min-width: 300px) {
+  .card {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+}
+
+@container (min-width: 600px) {
+  .card {
+    font-size: 1.2rem;
+  }
+}
+
+/* Standard CSS - should be ignored */
+div {
+  padding: 1rem;
+  margin: 0.5rem;
+}

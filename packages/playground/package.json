@@ -1,0 +1,39 @@
+{
+  "name": "@baseline-vanguard/playground",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check",
+    "check:watch": "svelte-kit sync && svelte-check --watch",
+    "lint": "prettier --check . && eslint .",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@baseline-vanguard/eslint-plugin-baseline": "workspace:*",
+    "@baseline-vanguard/stylelint-plugin-baseline": "workspace:*",
+    "@codemirror/basic-setup": "^0.20.0",
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.38.2",
+    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-svelte": "^2.35.1",
+    "prettier": "^3.1.1",
+    "prettier-plugin-svelte": "^3.1.2",
+    "stylelint": "^16.0.0",
+    "svelte": "^5.0.0",
+    "svelte-check": "^3.6.0",
+    "vite": "^5.0.3"
+  },
+  "dependencies": {
+    "@codemirror/lang-css": "^6.3.1",
+    "@codemirror/lang-javascript": "^6.2.4",
+    "codemirror": "^6.0.2"
+  }
+}
