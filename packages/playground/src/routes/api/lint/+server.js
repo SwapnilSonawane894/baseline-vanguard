@@ -39,6 +39,24 @@ const createSimplifiedESLintPlugin = () => ({
               }
             });
           }
+          
+          // Detect hasOwnProperty usage
+          if (node.callee.type === 'MemberExpression' && 
+              node.callee.property && 
+              node.callee.property.name === 'hasOwnProperty') {
+            context.report({
+              node,
+              message: 'hasOwnProperty() can be unreliable. Consider using Object.hasOwn() or Object.prototype.hasOwnProperty.call() for better safety.',
+              fix: (fixer) => {
+                if (node.arguments.length === 1) {
+                  const sourceCode = context.getSourceCode();
+                  const objectText = sourceCode.getText(node.callee.object);
+                  const argText = sourceCode.getText(node.arguments[0]);
+                  return fixer.replaceText(node, `Object.prototype.hasOwnProperty.call(${objectText}, ${argText})`);
+                }
+              }
+            });
+          }
         },
         ImportDeclaration: (node) => {
           // Detect modern import features
