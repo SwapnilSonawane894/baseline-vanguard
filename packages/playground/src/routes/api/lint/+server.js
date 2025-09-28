@@ -1,8 +1,8 @@
 import { json } from '@sveltejs/kit';
 import { Linter } from 'eslint';
 import stylelint from 'stylelint';
-import eslintPlugin from '@baseline-vanguard/eslint-plugin-baseline';
-import stylelintPlugin from '@baseline-vanguard/stylelint-plugin-baseline';
+import * as eslintPlugin from '@baseline-vanguard/eslint-plugin-baseline';
+import * as stylelintPlugin from '@baseline-vanguard/stylelint-plugin-baseline';
 
 // Initialize the ESLint linter instance programmatically.
 const linter = new Linter();
