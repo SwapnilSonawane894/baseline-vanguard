@@ -102,4 +102,6 @@ module.exports = {
 ```
 
 ## Install Dependencies
-```pnpm install```
+```javascript 
+pnpm install
+```
