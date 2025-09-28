@@ -1,20 +1,35 @@
 import { json } from '@sveltejs/kit';
 import { Linter } from 'eslint';
 import stylelint from 'stylelint';
-import eslintPlugin from '@baseline-vanguard/eslint-plugin-baseline';
-import * as stylelintPlugin from '@baseline-vanguard/stylelint-plugin-baseline';
 
-// Initialize the ESLint linter instance programmatically.
-const linter = new Linter();
-// We have to define the rules from our plugin so the linter knows about them.
-linter.defineRules(eslintPlugin.rules);
+// Dynamic imports to avoid SSR issues
+let eslintPlugin, stylelintPlugin;
+
+// Initialize plugins lazily to avoid build-time issues
+async function initializePlugins() {
+  if (!eslintPlugin) {
+    eslintPlugin = await import('@baseline-vanguard/eslint-plugin-baseline');
+  }
+  if (!stylelintPlugin) {
+    stylelintPlugin = await import('@baseline-vanguard/stylelint-plugin-baseline');
+  }
+  return { eslintPlugin, stylelintPlugin };
+}
 
 // This is our serverless API endpoint that powers the web playground.
 export async function POST({ request }) {
   try {
     const { code, language } = await request.json();
 
+    // Initialize plugins dynamically to avoid SSR issues
+    const { eslintPlugin, stylelintPlugin } = await initializePlugins();
+
     if (language === 'javascript') {
+      // Initialize the ESLint linter instance programmatically.
+      const linter = new Linter();
+      // We have to define the rules from our plugin so the linter knows about them.
+      linter.defineRules(eslintPlugin.rules);
+
       const config = {
         parserOptions: { ecmaVersion: 2022, sourceType: 'module' },
         rules: {

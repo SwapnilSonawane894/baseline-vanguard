@@ -9,5 +9,12 @@ export default defineConfig({
 			'@baseline-vanguard/stylelint-plugin-baseline',
 			'web-features'
 		]
+	},
+	optimizeDeps: {
+		include: [
+			'@baseline-vanguard/eslint-plugin-baseline',
+			'@baseline-vanguard/stylelint-plugin-baseline',
+			'web-features'
+		]
 	}
 });
