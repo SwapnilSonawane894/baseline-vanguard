@@ -66,11 +66,23 @@ Our plugins come with a recommended configuration to get you started instantly w
 
 ```javascript
 module.exports = {
-  // ... your other config
+  env: {
+    browser: true,
+    es2022: true,
+    node: true
+  },
+  parserOptions: {
+    ecmaVersion: 2022,
+    sourceType: 'module'
+  },
   extends: [
     "eslint:recommended",
     "plugin:@baseline-vanguard/baseline/recommended"
-  ]
+  ],
+  rules: {
+    "detect-unsupported-js-features": ["error", { supportLevel: "high" }],
+    "no-heavy-alternatives": "warn"
+  }
 };
 ```
 
@@ -78,8 +90,12 @@ module.exports = {
 
 ```javascript
 module.exports = {
-  // ... your other config
-  plugins: ["@baseline-vanguard/stylelint-plugin-baseline"],
+  extends: [
+    "stylelint-config-standard"
+  ],
+  plugins: [
+    "@baseline-vanguard/stylelint-plugin-baseline"
+  ],
   rules: {
     "baseline/detect-unsupported-css-features": true
   }
